@@ -18,19 +18,19 @@
         $scope.isAllSelected = false;
         $scope.checkboxes = {};
 
-        $scope.sellectAll = function (){
-            angular.forEach($scope.userList, function (item){
+        $scope.sellectAll = function () {
+            angular.forEach($scope.userList, function (item) {
                 $scope.checkboxes[item.id] = $scope.isAllSelected;
             })
         };
-        
-        $scope.$watch('[currentPage, limit, sortReverse, searchTerm, ageRange]',function (){
+
+        $scope.$watch('[currentPage, limit, sortReverse, searchTerm, ageRange]', function () {
             $scope.userList = filterUserList();
         }, true);
 
-        function filterUserList(){
+        function filterUserList() {
             var filteredData;
-            if($scope.ageRange){
+            if ($scope.ageRange) {
                 var rangeArr = $scope.ageRange.split('-');
                 rangeArr = rangeArr[1] ? rangeArr : $scope.ageRange.split('+');
                 filteredData = $filter('rangeFilter')($scope.userModel, rangeArr[0], rangeArr[1]);
@@ -38,7 +38,7 @@
             filteredData = $filter('filter')(filteredData, $scope.searchTerm);
             filteredData = $filter('orderBy')(filteredData, $scope.sortType, $scope.sortReverse);
             $scope.pagesLength = filteredData.length;
-            filteredData = $filter('limitTo')(filteredData, $scope.limit, $scope.currentPage === 1 ? 0 : ($scope.currentPage - 1) * $scope.limit);
+            filteredData = $filter('limitTo')(filteredData, $scope.limit, $scope.currentPage===1 ? 0 : ($scope.currentPage - 1) * $scope.limit);
             return filteredData;
         }
 

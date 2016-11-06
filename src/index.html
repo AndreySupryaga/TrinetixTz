@@ -111,8 +111,8 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.age }}</td>
                     <td>
-                        <button class="btn btn-info btn-circle" ng-click="userEdit(user)">e</button>
-                        <button class="btn btn-danger btn-circle" ng-click="userDelete(user)">d</button>
+                        <button class="btn btn-info btn-circle" ng-click="userEdit(user)" uib-tooltip="Edit">e</button>
+                        <button class="btn btn-danger btn-circle" ng-click="userDelete(user)" uib-tooltip="Remove">d</button>
                     </td>
                 </tr>
                 </tbody>
