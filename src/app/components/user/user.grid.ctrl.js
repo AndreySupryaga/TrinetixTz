@@ -3,7 +3,7 @@
 
     angular
         .module('trinetixTz')
-        .controller('gridController', MainController);
+        .controller('userGridCtrl', MainController);
 
     function MainController($scope, $http, toastr, $filter, confirmDialog, userEditDialog) {
 
@@ -30,14 +30,14 @@
             } else {
                 $scope.limit = previousLimit;
             }
-            $scope.userList = filterUserList();
+            filterUserList();
         };
 
         angular.element(window).on("scroll", function () {
             if (!$scope.isPagination && $(window).scrollY + $(window).innerHeight + 150 > $(document).scrollingElement.clientHeight) {
                 if ($scope.limit <= $scope.userModel.length) {
                     $scope.limit = +$scope.limit + 5;
-                    $scope.userList = filterUserList();
+                    filterUserList();
                     !$scope.$$phase && $scope.$apply();
                 }
             }
@@ -52,14 +52,14 @@
          */
         $http.get('app/userList.json').then(function (response) {
             $scope.userModel = response.data;
-            $scope.userList = filterUserList();
+            filterUserList();
             $scope.loader = false;
         });
         /**
          * Watch for filter data
          */
         $scope.$watch('[currentPage, limit, sortReverse, searchTerm, ageRange]', function () {
-            $scope.userList = filterUserList();
+            filterUserList();
         }, true);
 
         $scope.editInPlaceSave = function (arg) {
@@ -89,7 +89,7 @@
             confirmDialog(title, descr)
                 .then(function () {
                     modelDeleteItem(user);
-                    $scope.userList = filterUserList();
+                    filterUserList();
                     toastr.success('Deleted', 'Success');
                 });
         }
@@ -107,7 +107,7 @@
                             modelDeleteItem($scope.userList[i]);
                         }
                     }
-                    $scope.userList = filterUserList();
+                    filterUserList();
                     $scope.isAllSelected = false;
                     $scope.checkboxes = {};
                     toastr.success('Selected item deleted', 'Success');
@@ -154,7 +154,8 @@
             filteredData = $filter('orderBy')(filteredData, $scope.sortType, $scope.sortReverse);
             $scope.pagesLength = filteredData.length;
             filteredData = $filter('limitTo')(filteredData, $scope.limit, $scope.currentPage===1 ? 0 : ($scope.currentPage - 1) * $scope.limit);
-            return filteredData;
+            $scope.userList = filteredData;
+            return $scope.userList;
         }
 
         $scope.isEmptyObject = function (obj) {

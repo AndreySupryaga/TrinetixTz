@@ -2,6 +2,11 @@
     'use strict';
 
     angular
-        .module('trinetixTz', ['ngAnimate', 'ui.bootstrap', 'toastr']);
-    
+        .module('trinetixTz', [
+            'ngAnimate',
+            'ui.bootstrap',
+            'ngRoute',
+            'toastr'
+        ]);
+
 })();
