@@ -47,7 +47,9 @@
                 controller: function ($scope) {
                     $scope.userModel = angular.copy(user);
                     $scope.ok = function () {
-                        modalInstance.close($scope.userModel);
+                        angular.equals(user, $scope.userModel) ?
+                            modalInstance.close() :
+                            modalInstance.close($scope.userModel);
                     };
                     $scope.cancel = function () {
                         modalInstance.dismiss('cancel');
@@ -55,8 +57,10 @@
                 }
             });
             modalInstance.result.then(function (changedModel) {
-                angular.extend(user, changedModel);
-                toastr.success('Edited', 'Success');
+                if (changedModel) {
+                    angular.extend(user, changedModel);
+                    toastr.success('Edited', 'Success');
+                }
             });
         }
 
