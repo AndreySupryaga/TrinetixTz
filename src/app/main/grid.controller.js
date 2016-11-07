@@ -5,21 +5,27 @@
         .module('trinetixTz')
         .controller('gridController', MainController);
 
-    function MainController($scope, userList, toastr, $uibModal, $filter, confirmDialog) {
+    function MainController($scope, $http, toastr, $uibModal, $filter, confirmDialog) {
 
         $scope.limit = '10';
-        $scope.currentPage = 1;
+        $scope.currentPage = '1';
         $scope.ageRange = 'all';
-        $scope.userModel = angular.copy(userList);
-        $scope.userList = userList;
+        $scope.userModel = [];
         $scope.isAllSelected = false;
         $scope.checkboxes = {};
         $scope.userEdit = userEdit;
         $scope.userDelete = userDelete;
         $scope.userDeleteSelected = userDeleteSelected;
         $scope.selectUser = selectUser;
-        $scope.loader = false;
 
+        /**
+         * Getting users data
+         */
+        $http.get('app/userList.json').then(function (response) {
+            $scope.userModel = response.data;
+            $scope.userList = filterUserList();
+            $scope.loader = false;
+        });
         /**
          * Watch for filter data
          */

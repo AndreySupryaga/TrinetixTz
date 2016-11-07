@@ -6,9 +6,8 @@
         .config(config);
 
     /** @ngInject */
-    function config($logProvider, toastrConfig, $uibTooltipProvider) {
-        // Enable log
-        $logProvider.debugEnabled(true);
+    function config(toastrConfig, $uibTooltipProvider) {
+        
         // Set options third-party lib
         $uibTooltipProvider.options({popupDelay: 400});
         toastrConfig.allowHtml = true;
