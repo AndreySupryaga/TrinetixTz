@@ -5,18 +5,47 @@
         .module('trinetixTz')
         .controller('gridController', MainController);
 
-    function MainController($scope, $http, toastr, $uibModal, $filter, confirmDialog) {
+    function MainController($scope, $http, toastr, $filter, confirmDialog, userEditDialog) {
 
         $scope.limit = '10';
         $scope.currentPage = '1';
         $scope.ageRange = 'all';
         $scope.userModel = [];
+        $scope.isPagination = true;
         $scope.isAllSelected = false;
         $scope.checkboxes = {};
         $scope.userEdit = userEdit;
         $scope.userDelete = userDelete;
         $scope.userDeleteSelected = userDeleteSelected;
         $scope.selectUser = selectUser;
+
+        /**
+         * Change type. Pagination or Infinity scroll
+         */
+        var previousLimit;
+        $scope.selectType = function () {
+            if (!$scope.isPagination) {
+                previousLimit = $scope.limit;
+                $scope.limit = '25';
+            } else {
+                $scope.limit = previousLimit;
+            }
+            $scope.userList = filterUserList();
+        };
+
+        angular.element(window).on("scroll", function () {
+            if (!$scope.isPagination && $(window).scrollY + $(window).innerHeight + 150 > $(document).scrollingElement.clientHeight) {
+                if ($scope.limit <= $scope.userModel.length) {
+                    $scope.limit = +$scope.limit + 5;
+                    $scope.userList = filterUserList();
+                    !$scope.$$phase && $scope.$apply();
+                }
+            }
+        });
+
+        function $(s) {
+            return angular.element(s)[0];
+        }
 
         /**
          * Getting users data
@@ -42,21 +71,7 @@
          * @param {Object} user - User data
          */
         function userEdit(user) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'editModal.html',
-                controller: function ($scope) {
-                    $scope.userModel = angular.copy(user);
-                    $scope.ok = function () {
-                        angular.equals(user, $scope.userModel) ?
-                            modalInstance.close() :
-                            modalInstance.close($scope.userModel);
-                    };
-                    $scope.cancel = function () {
-                        modalInstance.dismiss('cancel');
-                    };
-                }
-            });
-            modalInstance.result.then(function (changedModel) {
+            userEditDialog(user).then(function (changedModel) {
                 if (changedModel) {
                     angular.extend(user, changedModel);
                     toastr.success('Edited', 'Success');
@@ -138,7 +153,7 @@
             filteredData = $filter('filter')(filteredData, $scope.searchTerm);
             filteredData = $filter('orderBy')(filteredData, $scope.sortType, $scope.sortReverse);
             $scope.pagesLength = filteredData.length;
-            filteredData = $filter('limitTo')(filteredData, $scope.limit, $scope.currentPage === 1 ? 0 : ($scope.currentPage - 1) * $scope.limit);
+            filteredData = $filter('limitTo')(filteredData, $scope.limit, $scope.currentPage===1 ? 0 : ($scope.currentPage - 1) * $scope.limit);
             return filteredData;
         }
 
