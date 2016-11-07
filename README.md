@@ -1,4 +1,5 @@
-[Online project page](https://andreysupryaga.github.io/TrinetixTz)
+# Project page
+[TrinetixTz](https://andreysupryaga.github.io/TrinetixTz)
 
 
 # Need perform following commands
