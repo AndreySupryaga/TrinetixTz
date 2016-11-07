@@ -20,7 +20,7 @@ Start server
 gulp serve
 ```
 
-### All comands for first deployment
+### All commands for first deployment
 
 ```
 npm install && bower install && gulp build && gulp serve
