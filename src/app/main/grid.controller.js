@@ -59,8 +59,8 @@
             var descr = 'You really want to delete ' + user.firstName + ' ' + user.lastName;
             confirmDialog(title, descr)
                 .then(function () {
-                    $scope.userList.splice($scope.userList.indexOf(user), 1);
-                    $scope.userModel.splice($scope.userModel.indexOf(user), 1);
+                    modelDeleteItem(user);
+                    $scope.userList = filterUserList();
                     toastr.success('Deleted', 'Success');
                 });
         }
@@ -75,14 +75,13 @@
                 .then(function () {
                     for (var i = 0; i < $scope.userList.length; i++) {
                         if ($scope.checkboxes[$scope.userList[i].id]) {
-                            $scope.userList.splice($scope.userList.indexOf($scope.userList[i]), 1);
-                            $scope.userModel.splice($scope.userModel.indexOf($scope.userList[i]), 1);
-                            i -= 1;
+                            modelDeleteItem($scope.userList[i]);
                         }
                     }
                     $scope.userList = filterUserList();
                     $scope.isAllSelected = false;
                     $scope.checkboxes = {};
+                    toastr.success('Selected item deleted', 'Success');
                 });
         }
 
@@ -132,6 +131,12 @@
         $scope.isEmptyObject = function (obj) {
             return angular.equals({}, obj);
         };
+
+
+        function modelDeleteItem(item) {
+            $scope.userModel.splice($scope.userModel.indexOf(item), 1);
+
+        }
 
     }
 })();
