@@ -1,14 +1,13 @@
-(function() {
-  'use strict';
+(function () {
+    'use strict';
 
-  angular
-    .module('trinetixTz')
-    .run(runBlock);
+    angular
+        .module('trinetixTz')
+        .run(runBlock);
 
-  /** @ngInject */
-  function runBlock($log) {
-
-    $log.debug('runBlock end');
-  }
+    /** @ngInject */
+    function runBlock($rootScope) {
+        $rootScope.loader = true;
+    }
 
 })();

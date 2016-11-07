@@ -18,6 +18,7 @@
         $scope.userDelete = userDelete;
         $scope.userDeleteSelected = userDeleteSelected;
         $scope.selectUser = selectUser;
+        $scope.loader = false;
 
         /**
          * Watch for filter data
@@ -25,6 +26,10 @@
         $scope.$watch('[currentPage, limit, sortReverse, searchTerm, ageRange]', function () {
             $scope.userList = filterUserList();
         }, true);
+
+        $scope.editInPlaceSave = function (arg) {
+            toastr.success(arg.previousValue + ' => ' + arg.value, 'Changed');
+        };
 
         /**
          * Edit select user in dialog window
@@ -44,7 +49,6 @@
                 }
             });
             modalInstance.result.then(function (changedModel) {
-                console.log(changedModel);
                 angular.extend(user, changedModel);
                 toastr.success('Edited', 'Success');
             });
