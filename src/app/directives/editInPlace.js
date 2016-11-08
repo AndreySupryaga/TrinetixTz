@@ -49,7 +49,6 @@
                             }
                         }
                     });
-
                     $scope.acceptEdits = function () {
                         $scope.value = $scope.modelCopy;
                         $scope.$apply();
@@ -62,6 +61,16 @@
                         }
                     };
 
+                    $scope.cancelEdits = function () {
+                        if ($scope.editing) {
+                            $scope.editing = false;
+                            element.removeClass('active');
+                            $scope.$apply(function () {
+                                $scope.value = previousValue;
+                            });
+                            $scope.onCancelFn({value: $scope.value});
+                        }
+                    };
                 }
             };
         });
