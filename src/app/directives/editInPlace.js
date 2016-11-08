@@ -9,7 +9,8 @@
                 scope: {
                     type: '@',
                     value: '=editInPlace',
-                    onSave: '='
+                    onSave: '=',
+                    onCancel: '='
                 },
                 template: '<span ng-click="handleClick()" ng-bind="value"></span><input type="{{type || \'text\'}}" ng-model="modelCopy" style="width:100%;">',
                 link: function ($scope, element) {
@@ -68,7 +69,9 @@
                             $scope.$apply(function () {
                                 $scope.value = previousValue;
                             });
-                            $scope.onCancelFn({value: $scope.value});
+                            if(typeof $scope.onCancel === 'function'){
+                                $scope.onCancel({value: $scope.value});
+                            }
                         }
                     };
                 }
