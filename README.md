@@ -1,4 +1,4 @@
-# Project page
+# Demo
 [TrinetixTz](https://andreysupryaga.github.io/TrinetixTz)
 
 
